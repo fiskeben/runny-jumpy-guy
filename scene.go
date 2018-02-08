@@ -88,11 +88,11 @@ func (s *scene) handleEvent(event sdl.Event) bool {
 			}
 		case 20: // Q
 			if ke.State == 1 {
-				gravity += 0.1
+				gravity -= 0.01
 			}
 		case 4: // A
 			if ke.State == 1 {
-				gravity -= 0.1
+				gravity += 0.01
 			}
 		case 26: // W
 			if ke.State == 1 {
@@ -114,7 +114,7 @@ func (s *scene) handleEvent(event sdl.Event) bool {
 			if ke.State == 1 {
 				initialJumpVelocity += 0.1
 			}
-		case 19: // F
+		case 9: // F
 			if ke.State == 1 {
 				initialJumpVelocity -= 0.1
 			}
