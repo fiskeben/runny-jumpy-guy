@@ -15,6 +15,16 @@ However, I may add more features as long as I think it's fun.
 
 ## Getting started
 
+If you don't have SDL2 libraries installed,
+install them with Homebrew like this:
+
+`brew install sdl2 sdl2_image sdl2_ttf sdl2_mixer pkg-config`
+
+(if you're not on mac OS and/or using Homebrew,
+[refer to the Go bindings project for more details](https://github.com/veandco/go-sdl2))
+
+Get the Go bindings for SDL by running `go get go-sdl2`.
+
 Build the game with `go build`
 and run it with `./runny-jumpy-guy`.
 
