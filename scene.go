@@ -39,6 +39,7 @@ func (s *scene) run(r *sdl.Renderer, events chan sdl.Event) chan error {
 	errc := make(chan error)
 
 	go func() {
+		defer close(errc)
 		updateTick := time.Tick(10 * time.Millisecond)
 		renderTick := time.Tick(32 * time.Millisecond)
 
@@ -48,6 +49,7 @@ func (s *scene) run(r *sdl.Renderer, events chan sdl.Event) chan error {
 			select {
 			case e := <-events:
 				if quit := s.handleEvent(e); quit {
+					fmt.Println("Thanks for playing!")
 					return
 				}
 			case <-updateTick:

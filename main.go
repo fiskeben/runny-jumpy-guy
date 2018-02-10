@@ -45,7 +45,6 @@ func run() error {
 		select {
 		case events <- sdl.WaitEvent():
 		case err := <-errc:
-			close(errc)
 			return err
 		}
 	}
