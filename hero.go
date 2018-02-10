@@ -12,6 +12,7 @@ var gravity = -0.11
 var jumpConstant = 1.2
 var jumpIncrease = 0.25
 var initialJumpVelocity = float64(1)
+var ground = int32(360)
 
 type hero struct {
 	mu           sync.RWMutex
@@ -81,7 +82,7 @@ func newHero(r *sdl.Renderer) (*hero, error) {
 		w:            38,
 		h:            68,
 		x:            100,
-		y:            290,
+		y:            ground + 68,
 		speed:        0,
 		time:         0,
 		onGround:     true,
@@ -89,7 +90,7 @@ func newHero(r *sdl.Renderer) (*hero, error) {
 	}, nil
 }
 
-func (h *hero) update(factor int32) error {
+func (h *hero) update(factor int32, b *block) error {
 	h.mu.Lock()
 	defer h.mu.Unlock()
 
@@ -101,6 +102,14 @@ func (h *hero) update(factor int32) error {
 		h.x = 0
 	}
 
+	if h.speed > 0 && (h.x+h.w) > b.x && (h.x+h.w) < b.x+b.w && (h.y+h.h) > b.y {
+		h.x = b.x - h.w
+	}
+
+	if h.speed < 0 && h.x < (b.x+b.w) && h.x > b.x && h.y+h.h > b.y {
+		h.x = b.x + b.w
+	}
+
 	if h.jumpVelocity > 0 {
 		y := gravity*h.jumpVelocity*h.jumpVelocity + jumpConstant*h.jumpVelocity
 		h.jumpVelocity += jumpIncrease
@@ -108,8 +117,19 @@ func (h *hero) update(factor int32) error {
 		h.onGround = false
 	}
 
-	if h.y > 290 {
-		h.y = 290
+	if (h.y+h.h) > b.y && (h.x+h.w) > b.x && h.x < (b.x+b.w) {
+		h.y = b.y - h.h
+		h.onGround = true
+		h.jumpVelocity = 0
+	}
+
+	if h.y+h.h < ground && h.onGround && (h.x+h.w < b.x || h.x > b.x+b.w) {
+		h.jumpVelocity = 12.5
+		h.onGround = false
+	}
+
+	if h.y+h.h > ground {
+		h.y = ground - h.h
 		h.jumpVelocity = 0
 		h.onGround = true
 	}

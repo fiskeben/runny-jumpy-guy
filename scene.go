@@ -13,6 +13,7 @@ import (
 type scene struct {
 	background *sdl.Texture
 	hero       *hero
+	block      *block
 }
 
 func newScene(r *sdl.Renderer) (*scene, error) {
@@ -26,7 +27,12 @@ func newScene(r *sdl.Renderer) (*scene, error) {
 		return nil, err
 	}
 
-	return &scene{background: t, hero: h}, nil
+	b, err := newBlock(r, 400, ground-50, 50, 50)
+	if err != nil {
+		return nil, err
+	}
+
+	return &scene{background: t, hero: h, block: b}, nil
 }
 
 func (s *scene) run(r *sdl.Renderer, events chan sdl.Event) chan error {
@@ -138,7 +144,7 @@ func (s *scene) handleEvent(event sdl.Event) bool {
 }
 
 func (s *scene) update(f int32) error {
-	return s.hero.update(f)
+	return s.hero.update(f, s.block)
 }
 
 func (s *scene) paint(r *sdl.Renderer) error {
@@ -149,6 +155,8 @@ func (s *scene) paint(r *sdl.Renderer) error {
 	}
 
 	s.hero.paint(r)
+
+	s.block.paint(r)
 
 	if err := drawText(r, 20, 20, fmt.Sprintf("Gravity: %f", gravity)); err != nil {
 		return err
