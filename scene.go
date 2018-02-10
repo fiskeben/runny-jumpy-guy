@@ -158,16 +158,16 @@ func (s *scene) paint(r *sdl.Renderer) error {
 
 	s.block.paint(r)
 
-	if err := drawText(r, 20, 20, fmt.Sprintf("Gravity: %f", gravity)); err != nil {
+	if err := drawText(r, 20, 20, fmt.Sprintf("Gravity: %.2f", gravity)); err != nil {
 		return err
 	}
-	if err := drawText(r, 20, 40, fmt.Sprintf("Jump inc: %f", jumpIncrease)); err != nil {
+	if err := drawText(r, 20, 40, fmt.Sprintf("Jump inc: %.2f", jumpIncrease)); err != nil {
 		return nil
 	}
-	if err := drawText(r, 20, 60, fmt.Sprintf("Jump const: %f", jumpConstant)); err != nil {
+	if err := drawText(r, 20, 60, fmt.Sprintf("Jump const: %.2f", jumpConstant)); err != nil {
 		return nil
 	}
-	if err := drawText(r, 20, 80, fmt.Sprintf("Jump vel: %f", initialJumpVelocity)); err != nil {
+	if err := drawText(r, 20, 80, fmt.Sprintf("Jump vel: %.2f", initialJumpVelocity)); err != nil {
 		return nil
 	}
 
@@ -181,14 +181,14 @@ func (s *scene) destroy() {
 }
 
 func drawText(r *sdl.Renderer, x, y int32, text string) error {
-	f, err := ttf.OpenFont("font/PressStart2P.ttf", 10)
+	f, err := ttf.OpenFont("font/PressStart2P.ttf", 8)
 	if err != nil {
 		return fmt.Errorf("could not load font: %v", err)
 	}
 	defer f.Close()
 
 	c := sdl.Color{R: 255, G: 255, B: 255, A: 255}
-	s, err := f.RenderUTF8Solid(text, c)
+	s, err := f.RenderUTF8Blended(text, c)
 	if err != nil {
 		return fmt.Errorf("could not render title: %v", err)
 	}
