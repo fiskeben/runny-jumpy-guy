@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"runtime"
 
+	"github.com/veandco/go-sdl2/mix"
 	"github.com/veandco/go-sdl2/sdl"
 	"github.com/veandco/go-sdl2/ttf"
 )
@@ -30,6 +31,10 @@ func run() error {
 		return err
 	}
 	defer w.Destroy()
+
+	if err = mix.OpenAudio(mix.DEFAULT_FREQUENCY, mix.INIT_MP3, mix.DEFAULT_CHANNELS, mix.DEFAULT_CHUNKSIZE); err != nil {
+		return fmt.Errorf("failed to initialize audio: %v", err)
+	}
 
 	s, err := newScene(r)
 	if err != nil {

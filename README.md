@@ -49,4 +49,6 @@ The sprites are created by
 I highly encourage you to get them from the official source
 and support the artist (I did).
 
+Sounds are from [ZapSplat](https://www.zapsplat.com).
+
 The font is made by [Cody Boisclair](http://www.fontspace.com/codeman38/press-start-2p).

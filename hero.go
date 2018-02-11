@@ -5,6 +5,7 @@ import (
 	"sync"
 
 	"github.com/veandco/go-sdl2/img"
+	"github.com/veandco/go-sdl2/mix"
 	"github.com/veandco/go-sdl2/sdl"
 )
 
@@ -26,6 +27,10 @@ type hero struct {
 	direction    int
 	jumpVelocity float64
 	onGround     bool
+	stepping     int
+	startJump    bool
+	stepSound    *mix.Music
+	jumpSound    *mix.Music
 }
 
 type sprites struct {
@@ -77,6 +82,16 @@ func newHero(r *sdl.Renderer) (*hero, error) {
 		return nil, fmt.Errorf("failed to load texture: %v", err)
 	}
 
+	step, err := mix.LoadMUS("res/footstep.mp3")
+	if err != nil {
+		return nil, fmt.Errorf("failed to load foostep sound: %v", err)
+	}
+
+	jump, err := mix.LoadMUS("res/jump.mp3")
+	if err != nil {
+		return nil, fmt.Errorf("failed to load jump sound: %v", err)
+	}
+
 	return &hero{
 		sprites:      &s,
 		w:            38,
@@ -87,6 +102,10 @@ func newHero(r *sdl.Renderer) (*hero, error) {
 		time:         0,
 		onGround:     true,
 		jumpVelocity: 0.0,
+		stepping:     0,
+		startJump:    false,
+		stepSound:    step,
+		jumpSound:    jump,
 	}, nil
 }
 
@@ -181,6 +200,15 @@ func (h *hero) paint(r *sdl.Renderer) error {
 		if h.speed < 0 {
 			flip = sdl.FLIP_HORIZONTAL
 		}
+		if i%4 == 0 {
+			h.stepSound.Play(1)
+			h.stepping = i
+		}
+	}
+
+	if h.startJump {
+		h.jumpSound.Play(1)
+		h.startJump = false
 	}
 
 	if err := r.CopyEx(t, nil, rect, 0, nil, flip); err != nil {
@@ -230,4 +258,5 @@ func (h *hero) jump() {
 	}
 
 	h.jumpVelocity = initialJumpVelocity
+	h.startJump = true
 }
