@@ -2,7 +2,7 @@
 
 An exploration in game development with [Go](https://golang.org).
 
-![In game action](screenshot.png)
+![In game action](runny-jumpy.gif)
 
 ## Background
 
@@ -19,11 +19,19 @@ If you don't have SDL2 libraries installed,
 install them with Homebrew like this:
 
 `brew install sdl2 sdl2_image sdl2_ttf sdl2_mixer pkg-config`
+(to get the sounds working, install `sdl2_mixer` with `--with-mpg123`).
 
 (if you're not on mac OS and/or using Homebrew,
 [refer to the Go bindings project for more details](https://github.com/veandco/go-sdl2))
 
-Get the Go bindings for SDL by running `go get go-sdl2`.
+Get the Go bindings for SDL by running:
+
+```
+go get github.com/veandco/go-sdl2/sql
+go get github.com/veandco/go-sdl2/ttf
+go get github.com/veandco/go-sdl2/mix
+go get github.com/veandco/go-sdl2/img
+```
 
 Build the game with `go build`
 and run it with `./runny-jumpy-guy`.
