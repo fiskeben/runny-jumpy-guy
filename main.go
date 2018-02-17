@@ -32,6 +32,8 @@ func run() error {
 	}
 	defer w.Destroy()
 
+	w.SetTitle("Runny Jumpy Guy")
+
 	if err = mix.OpenAudio(mix.DEFAULT_FREQUENCY, mix.INIT_MP3, mix.DEFAULT_CHANNELS, mix.DEFAULT_CHUNKSIZE); err != nil {
 		return fmt.Errorf("failed to initialize audio: %v", err)
 	}
